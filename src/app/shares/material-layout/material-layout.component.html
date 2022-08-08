@@ -1,0 +1,216 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+  
+      <button mat-icon-button (click)="drawer.toggle();">
+        <mat-icon routerLinkActive="active-icon">menu</mat-icon>
+      </button>
+      <span>{{title}}</span>
+  
+      <span class="toolbar-spacer"></span>
+      Chanchit 
+  
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">
+          <fa-icon class="px-1" [icon]="faSignOut"></fa-icon>
+          <span>Log out</span>
+        </button>
+      </mat-menu>
+  
+    </mat-toolbar-row>
+  
+  </mat-toolbar>
+  
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" [attr.role]="isHandset ? 'dialog' : 'navigation'"
+      [mode]="isHandset ? 'over' : 'side'" [opened]="isMenuOpen">
+      <mat-nav-list>
+        <a [routerLink]="['/user-management']" mat-list-item href="#" routerLinkActive="active">
+          <mat-icon routerLinkActive="active-icon">person icon</mat-icon><span class="ml-2 ps-3"> User </span>
+        </a>
+        <a [routerLink]="['/role-management']" mat-list-item href="#" routerLinkActive="active">
+          <mat-icon routerLinkActive="active-icon">people icon</mat-icon><span class="ps-3"> Role</span>
+        </a>
+  
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content [ngStyle]="{ 'margin-left.px': contentMargin }">
+      <div class="main" (window:resize)="onResize($event)">
+        <div class="container">
+          <router-outlet></router-outlet>
+          
+
+          <div>
+            <div class="dialog-icon" *ngIf="!chatbotService.isShowChat" (click)="switchChat()">
+              <!-- <h4>Chat bot</h4> -->
+              <div class="position-relative icon-chat-hover"
+                style="width: 50px;height: 50px;border-radius:50%;border: 2px solid #e84118; padding: 2px;">
+                <img src="../../../assets/images/chatbot-icon.jpg" class="img-fluid rounded-circle" alt="">
+                <span
+                  class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
+                  <span class="visually-hidden">New alerts</span>
+                </span>
+              </div>
+            </div>
+            <!-- <input type="text" class="form-control" #search> -->
+            <div class="row mt-4 dialog-chat" *ngIf="chatbotService.isShowChat">
+              <div class="col">
+                <div class="card mx-auto" style="max-width: 400px;">
+                  <div class="card-header bg-transparent">
+                    <div class="navbar navbar-expand p-0">
+                      <ul class="navbar-nav me-auto align-items-center">
+                        <li class="nav-item pe-3">
+                          <fa-icon [icon]="faAngleLeft"></fa-icon>
+                        </li>
+                        <li class="nav-item">
+                          <a href="javascript:void(0)" class="nav-link">
+                            <div class="position-relative"
+                              style="width: 50px;height: 50px;border-radius:50%;border: 2px solid #e84118; padding: 2px;">
+                              <img src="../../../assets/images/chatbot-icon.jpg" class="img-fluid rounded-circle" alt="">
+                              <span
+                                class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                              </span>
+                            </div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="javascript:void(0)" class="nav-link">Chat Bot</a>
+                        </li>
+                      </ul>
+                      <ul class="navbar-nav ms-auto">
+                        <li class="nav-item" (click)="switchChat()">
+                          <div class="bg-transparent border-0">
+                            <button class="btn btn-light text-secondary" style="border-radius: 50%;">
+                              <fa-icon [icon]="faX"></fa-icon>
+                            </button>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card-body p-1"
+                    style="height: 400px; width: 350px;overflow-y: auto;overflow-x: hidden; padding-bottom: unset !important;"
+                    #scrollMe [scrollTop]="scrollMe.scrollHeight">
+                    <div *ngFor="let msg of chatbotService.messageShare;let i = index">
+                      <div class="small px-2 text-center" *ngIf="msg.is_ShowDay">
+                        <label>
+                          {{msg.time_stamp | date:'EEEE'}} {{msg.time_stamp | date:'shortTime'}}
+                        </label>
+                      </div>
+                      <div class="d-flex align-items-baseline" [class.mt-4]="i !== 0 && chatbotService.messageShare[i - 1].type !== 'received'"
+                        *ngIf="msg.type === 'received'">
+                        <div class="pe-4" style="word-break:break-all">
+                         
+                          <div class="card card-text-left d-inline-block p-2 px-3 m-1">
+                            <div *ngIf="!msg.button_id">
+                              {{msg.message}}
+                            </div>
+                            <div *ngIf="msg.button_id === 1">
+                              <span *ngFor="let topic of msg.topic;let idx = index" class="text-primary">
+                                <span (click)="answerQuestion(topic)" style="cursor: pointer">{{topic}} </span>
+                                <span *ngIf="idx !== msg.topic.length - 1" class="text-dark"> | </span>
+                              </span>
+                            </div>
+                            <div *ngIf="msg.button_id === 2">
+                              <span class="text-primary">
+                                <span style="cursor: pointer">{{msg.message}} </span>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="small px-2" *ngIf="msg.time_stamp">
+                            <label>
+                              <!-- {{msg.time_stamp | date :'short'}} -->
+                              {{msg.time_stamp | date:'shortTime'}}
+                            </label>
+                          </div>
+                          <!-- <div *ngFor="let msg of item.messages">
+                            <div *ngIf="msg.button_id === null" class="card card-text-left d-inline-block p-2 px-3 m-1">
+                              {{msg.message}}
+                            </div>
+                            <div *ngIf="msg.button_id === 1" class="card card-text-left d-inline-block p-2 px-3 m-1" >
+                                <span *ngFor="let topic of msg.topic;let i = index" class="text-primary">
+                                  <span (click)="answerQuestion(topic)" style="cursor: pointer">{{topic}} </span>
+                                  <span *ngIf="i !== msg.topic.length - 1" class="text-dark"> | </span>
+                                </span>
+                            </div>
+                            <div *ngIf="msg.button_id === 2" class="card card-text-left d-inline-block p-2 px-3 m-1" >
+                              <span *ngFor="let topic of msg.topic;let i = index" class="text-primary">
+                                <span style="cursor: pointer">{{topic}} </span>
+                              </span>
+                          </div>
+                          </div> -->
+                        </div>
+          
+                      </div>
+                      <div class="d-flex align-items-baseline text-end justify-content-end"
+                        [class.mt-4]="i !== 0 && chatbotService.messageShare[i - 1].type !== 'sent'" *ngIf="msg.type === 'sent'">
+                        <div class="ps-4" style="word-break:break-all">
+                          <div class="card d-inline-block p-2 px-3 m-1" [class.card-text-right]="!msg.button_id" [class.card-text-right-btn1]="msg.button_id === 1" [class.card-text-right-btn2]="msg.button_id === 2">
+                            <div *ngIf="!msg.button_id && !msg.is_connection_lose">
+                              {{msg.message}}
+                            </div>
+                            <div *ngIf="msg.button_id === 1 && !msg.is_connection_lose">
+                              <span *ngFor="let topic of msg.topic;let i = index" class="text-danger">
+                                <span (click)="answerQuestion(topic)" style="cursor: pointer">{{topic}} </span>
+                                <span *ngIf="i !== msg.topic.length - 1" class="text-danger"> | </span>
+                              </span>
+                            </div>
+                            <div *ngIf="msg.button_id === 2 && !msg.is_connection_lose">
+                              <span class="text-danger">
+                                <span style="cursor: pointer">{{msg.message}} </span>
+                              </span>
+                            </div>
+                            <div *ngIf="msg.is_connection_lose">
+                              <span class="text-dark">
+                                <span style="cursor: pointer">{{msg.message}} </span>
+                              </span>
+                            </div>
+                          </div>
+                          <div  class="small" *ngIf="msg.time_stamp && !msg.is_connection_lose">
+                            <label>
+                              <!-- {{msg.time_stamp | date :'short'}} -->
+                              {{msg.time_stamp | date:'shortTime'}}
+                            </label>
+                          </div>
+                          <div *ngIf="msg.is_connection_lose">
+                            <label>
+                              <fa-icon [icon]="faTriangleExclamation"></fa-icon><span class="ps-2">Connection lose</span>
+                            </label>
+                          </div>
+                          <!-- <div *ngFor="let msg of item.messages">
+                            <div class="card card-text-right d-inline-block p-2 px-3 m-1">{{msg.message}}</div>
+                          </div> -->
+                          <!-- <div class="small">
+                              <label>01:13PM</label>
+                          </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer bg-white w-100 bottom-0 m-0 p-1">
+                    <div class="input-group">
+          
+                      <input type="text" id="send-msg" [disabled]="false" [(ngModel)]="textInput" class="form-control border-0"
+                        placeholder="Write a message..." (keydown)="onKeydownMessages($event)">
+          
+                      <div class="input-group-text bg-transparent border-0">
+                        <button [disabled]="false" class="btn btn-light text-secondary" (click)="sendMessage(textInput)">
+                          <fa-icon [icon]="faPaperPlane"></fa-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </mat-sidenav-content>
+  
+  </mat-sidenav-container>
+  

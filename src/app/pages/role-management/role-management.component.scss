@@ -1,0 +1,66 @@
+a.nav-link{
+    color: gray;
+    font-size: 18px;
+    padding: 0;
+}
+
+.avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #e84118;
+    padding: 2px;
+}
+
+input:focus{
+    outline: 0px !important;
+    box-shadow: none !important;
+}
+
+.card-text-left{
+    border: 2px solid rgba(245, 245, 245, 0.856);
+    border-radius: 20px 20px 20px 0;
+    background-color: rgba(245, 245, 245, 0.856);
+    color: black;
+}
+
+.card-text-right{
+    border: 2px solid rgb(236, 65, 65);
+    border-radius: 20px 20px 0 20px;
+    background-color: rgb(236, 65, 65);
+    color: white;
+}
+
+
+.dialog-chat {
+    position:fixed;
+    bottom:0;
+    right:80px;
+}
+
+
+.dialog-icon {
+    cursor: pointer;
+    position:fixed;
+    bottom:15px;
+    right:30px;
+}
+
+.icon-chat-hover:hover{
+    width: 60px !important;
+    height: 60px !important;
+}
+
+.icon-x{
+    cursor: pointer;
+}
+
+#send-msg:disabled{
+    background-color: #fafafa !important;
+}
+
+
+// .form-control:disabled {
+//     background-color: #e9ecef;
+//     opacity: 1;
+// }

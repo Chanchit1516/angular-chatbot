@@ -1,0 +1,41 @@
+<div class="bg-login" *ngIf="!isLoggedIn">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm-12">
+        <div class="card center" style="width: 35rem">
+          <div class="card-body">
+            <h2 class="card-title text-center">Sign In</h2>
+            <form class="mt-4"  action="/" method="get">
+              <!-- <p v-if="errors.length">
+                <b>Please correct the following error(s):
+                  <ul>
+                    <li v-for="error in errors" :key="error">Error</li>
+                  </ul></b>
+              </p> -->
+              <div class="mb-3">
+                <label for="exampleInputUser1"  class="form-label">Username</label>
+                <input type="text" class="form-control" id="userName" placeholder="Username"/>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" v-model="password"
+                  placeholder="Password" />
+              </div>
+              <div class="mb-3">
+                <label *ngIf="isError" class="form-label text-danger">User or Password is Incorrect!</label>
+           
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary" (click)="login()">Login</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

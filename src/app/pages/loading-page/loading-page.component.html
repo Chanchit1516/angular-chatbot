@@ -1,0 +1,13 @@
+<div class="bg-loading">
+
+  <div class="card w-25">
+    <button class="btn btn-success" (click)="goBack()">Go back</button>
+
+    <h1 *ngIf="_display">The data will sync in : {{_display}}</h1>
+    <p>A simple warframe style loader</p>
+    <div class="loader">
+      <div class="spin"></div>
+      <div class="bounce"></div>
+    </div>
+  </div>
+</div>

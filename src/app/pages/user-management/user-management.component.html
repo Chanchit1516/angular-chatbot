@@ -1,0 +1,77 @@
+
+<div class="mt-4">
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-3">
+          <label for="formGroupExampleInput" class="form-label">Filter 01</label>
+          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Filter 01">
+        </div>
+        <div class="col-sm-3">
+          <label for="formGroupExampleInput" class="form-label">Filter 02</label>
+          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Filter 02">
+        </div>
+        <div class="col-sm-3">
+          <label for="formGroupExampleInput" class="form-label">Filter 03</label>
+          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Filter 03">
+        </div>
+        <div class="col-sm-3">
+          <label for="formGroupExampleInput" class="form-label">Filter 04</label>
+          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Filter 04">
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-7 col-md-9">
+        </div>
+        <div class="col-12 col-sm-5 col-md-3">
+          <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
+            <button mat-raised-button class="btn btn-success">
+              <mat-icon routerLinkActive="active-icon">print icon</mat-icon> Export
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="weight">
+            <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="symbol">
+            <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </div>
+    </div>
+
+  </div>
+</div>
