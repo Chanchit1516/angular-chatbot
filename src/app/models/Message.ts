@@ -8,6 +8,7 @@ export class Message{
     time_stamp!:Date | null;
     is_connection_lose!:boolean;
     is_ShowDay!:boolean;
+    is_loading!:boolean;
 }
 
 export class SendMessage{

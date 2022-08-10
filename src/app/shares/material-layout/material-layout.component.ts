@@ -56,7 +56,9 @@ export class MaterialLayoutComponent implements OnInit {
   public contentMargin = 240;
   isLoggedIn = false;
   isShow: boolean = true
+  isMessageLoading: boolean = false
   textInput!: string;
+  delayMessage:number = 1500;
 
   messages = new Array<Message>();
   message = new Message();
@@ -189,6 +191,7 @@ export class MaterialLayoutComponent implements OnInit {
 
   answerQuestion(value: any) {
     if (this.user.user_type !== "DSSC") {
+      this.isMessageLoading = true;
       this.sendMessage(value, true);
     }
   }
@@ -248,82 +251,51 @@ export class MaterialLayoutComponent implements OnInit {
 
 
   addToInbox(obj: RecieveMessage) {
-    if (obj.isFirstLoad) {
-      this.count++;
-      this.messages = new Array<Message>();
-      obj.lists.forEach((element, index) => {
-        this.message = new Message();
-        this.message.user_id = obj.userId;
-        this.message.user_type = element.userType;
-        this.message.button_id = element.buttonId;
-        this.message.message = element.message;
-        this.message.topic = element.topic;
-        this.message.type = element.type;
-        this.message.time_stamp = element.timeStamp;
-        this.message.is_ShowDay = true;
-        if (this.messages.length > 1) {
-          var checkDate = this.messages[this.messages.length - 1];
-          var date1 = new Date(checkDate?.time_stamp?.toString() ?? "")
-          var date2 = new Date(element.timeStamp?.toString() ?? "")
-          if (date1.getDate() == date2.getDate() &&
-            date1.getMinutes() == date2.getMinutes() &&
-            checkDate.user_type == this.message.user_type) {
-            this.messages[this.messages.length - 1].time_stamp = null;
-          }
-          if (date1.getDay() === date2.getDay() && date1.getMonth() === date2.getMonth()) {
-            this.message.is_ShowDay = false;
-          }
+    setTimeout(() => {
+      this.isMessageLoading = false;
+      if (obj.isFirstLoad) {
+        this.count++;
+        this.messages = new Array<Message>();
+        obj.lists.forEach((element, index) => {
+          this.message = new Message();
+          this.message.user_id = obj.userId;
+          this.message.user_type = element.userType;
+          this.message.button_id = element.buttonId;
+          this.message.message = element.message;
+          this.message.topic = element.topic;
+          this.message.type = element.type;
+          this.message.time_stamp = element.timeStamp;
+          this.message.is_ShowDay = true;
+          if (this.messages.length > 1) {
+            var checkDate = this.messages[this.messages.length - 1];
+            var date1 = new Date(checkDate?.time_stamp?.toString() ?? "")
+            var date2 = new Date(element.timeStamp?.toString() ?? "")
+            if (date1.getDate() == date2.getDate() &&
+              date1.getMinutes() == date2.getMinutes() &&
+              checkDate.user_type == this.message.user_type) {
+              this.messages[this.messages.length - 1].time_stamp = null;
+            }
+            if (date1.getDay() === date2.getDay() && date1.getMonth() === date2.getMonth()) {
+              this.message.is_ShowDay = false;
+            }
 
-        }
-
-        this.messages.push(this.message);
-        // this.chatbotService.messageShare = this.messages;
-        // this.scrollToBottom()
-      });
-    } else if (obj.userId !== this.user.user_id) {
-      obj.lists.forEach((element, index) => {
-        this.message = new Message();
-        this.message.user_id = obj.userId;
-        this.message.user_type = index == 0 ? obj.userType : "DSSC";
-        this.message.button_id = element.buttonId;
-        this.message.message = element.message;
-        this.message.topic = element.topic;
-        this.message.type = index == 0 ? "received" : "sent";
-        this.message.time_stamp = element.timeStamp;
-        this.message.is_ShowDay = true;
-        if (this.messages.length > 1) {
-          var checkDate = this.messages[this.messages.length - 1];
-          var date1 = new Date(checkDate?.time_stamp?.toString() ?? "")
-          var date2 = new Date(element.timeStamp?.toString() ?? "")
-          if (date1.getDate() == date2.getDate() &&
-            date1.getMinutes() == date2.getMinutes() &&
-            checkDate.user_type == this.message.user_type) {
-            this.messages[this.messages.length - 1].time_stamp = null;
           }
 
-          if (date1.getDay() === date2.getDay() && date1.getMonth() === date2.getMonth()) {
-            this.message.is_ShowDay = false;
-          }
-        }
-
-
-        this.messages.push(this.message);
-        // this.chatbotService.messageShare = this.messages;
-        // this.scrollToBottom()
-      });
-    } else {
-      obj.lists.forEach((element, index) => {
-        if (index !== 0) {
+          this.messages.push(this.message);
+          // this.chatbotService.messageShare = this.messages;
+          // this.scrollToBottom()
+        });
+      } else if (obj.userId !== this.user.user_id) {
+        obj.lists.forEach((element, index) => {
           this.message = new Message();
           this.message.user_id = obj.userId;
           this.message.user_type = index == 0 ? obj.userType : "DSSC";
           this.message.button_id = element.buttonId;
           this.message.message = element.message;
           this.message.topic = element.topic;
-          this.message.type = "received";
+          this.message.type = index == 0 ? "received" : "sent";
           this.message.time_stamp = element.timeStamp;
           this.message.is_ShowDay = true;
-
           if (this.messages.length > 1) {
             var checkDate = this.messages[this.messages.length - 1];
             var date1 = new Date(checkDate?.time_stamp?.toString() ?? "")
@@ -334,29 +306,63 @@ export class MaterialLayoutComponent implements OnInit {
               this.messages[this.messages.length - 1].time_stamp = null;
             }
 
-
+            if (date1.getDay() === date2.getDay() && date1.getMonth() === date2.getMonth()) {
+              this.message.is_ShowDay = false;
+            }
           }
+
+
           this.messages.push(this.message);
           // this.chatbotService.messageShare = this.messages;
           // this.scrollToBottom()
-        }
-        this.messages[this.messages.length - 1].is_ShowDay = true;
+        });
+      } else {
+        obj.lists.forEach((element, index) => {
+          if (index !== 0) {
+            this.message = new Message();
+            this.message.user_id = obj.userId;
+            this.message.user_type = index == 0 ? obj.userType : "DSSC";
+            this.message.button_id = element.buttonId;
+            this.message.message = element.message;
+            this.message.topic = element.topic;
+            this.message.type = "received";
+            this.message.time_stamp = element.timeStamp;
+            this.message.is_ShowDay = true;
 
-        if (this.messages.length == 1) return
+            if (this.messages.length > 1) {
+              var checkDate = this.messages[this.messages.length - 1];
+              var date1 = new Date(checkDate?.time_stamp?.toString() ?? "")
+              var date2 = new Date(element.timeStamp?.toString() ?? "")
+              if (date1.getDate() == date2.getDate() &&
+                date1.getMinutes() == date2.getMinutes() &&
+                checkDate.user_type == this.message.user_type) {
+                this.messages[this.messages.length - 1].time_stamp = null;
+              }
 
-        var date2 = new Date(element.timeStamp?.toString() ?? "")
-        const result = this.messages.filter(s => s.time_stamp).sort((objA, objB) => new Date(objB.time_stamp ?? "").getTime() - new Date(objA.time_stamp ?? "").getTime());
 
-        if (new Date(result[1].time_stamp ?? "").getDate() === date2.getDate() && new Date(result[1].time_stamp ?? "").getMonth() === date2.getMonth()) {
-          this.messages[this.messages.length - 1].is_ShowDay = false;
-        }
+            }
+            this.messages.push(this.message);
+            // this.chatbotService.messageShare = this.messages;
+            // this.scrollToBottom()
+          }
+          this.messages[this.messages.length - 1].is_ShowDay = true;
 
-      });
-    }
-    if (this.messages.length >= this.chatbotService.messageShare.length) {
-      this.chatbotService.messageShare = this.messages;
-    }
-    this.scrollToBottom()
+          if (this.messages.length == 1) return
+
+          var date2 = new Date(element.timeStamp?.toString() ?? "")
+          const result = this.messages.filter(s => s.time_stamp).sort((objA, objB) => new Date(objB.time_stamp ?? "").getTime() - new Date(objA.time_stamp ?? "").getTime());
+
+          if (new Date(result[1].time_stamp ?? "").getDate() === date2.getDate() && new Date(result[1].time_stamp ?? "").getMonth() === date2.getMonth()) {
+            this.messages[this.messages.length - 1].is_ShowDay = false;
+          }
+
+        });
+      }
+      if (this.messages.length !== this.chatbotService.messageShare.length) {
+        this.chatbotService.messageShare = this.messages;
+      }
+      this.scrollToBottom()
+    }, obj.isFirstLoad ? 0 : this.delayMessage)
   }
 
   switchChat() {
