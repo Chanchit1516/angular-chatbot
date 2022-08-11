@@ -28,6 +28,8 @@ export class ChatbotService {
   ConnectionStarted = false;
   public messageShare: Message[] = [];
   public isShowChat = true;
+  public isTopicShare = true;
+  public isMessageLoadingShare = true;
   public connectionIdShare: any = "";
 
 

@@ -197,7 +197,7 @@
 
                   </div>
 
-                  <div *ngIf="isMessageLoading" class="card card-text-left d-inline-block p-2 px-3 m-1 mb-3">
+                  <div *ngIf="chatbotService.isMessageLoadingShare" class="card card-text-left d-inline-block p-2 px-3 m-1 mb-3">
                     <div class="loader">
                       <div class="circle" id="a"></div>
                       <div class="circle" id="b"></div>
@@ -210,12 +210,12 @@
                 <div class="card-footer bg-white w-100 bottom-0 m-0 p-1">
                   <div class="input-group">
 
-                    <input type="text" id="send-msg" [disabled]="isMessageLoading" [(ngModel)]="textInput"
+                    <input type="text" id="send-msg" [disabled]="chatbotService.isMessageLoadingShare" [(ngModel)]="textInput"
                       class="form-control border-0" placeholder="Write a message..."
                       (keydown)="onKeydownMessages($event)">
 
                     <div class="input-group-text bg-transparent border-0">
-                      <button [disabled]="isMessageLoading" class="btn btn-light text-secondary" (click)="sendMessage(textInput)">
+                      <button [disabled]="chatbotService.isMessageLoadingShare" class="btn btn-light text-secondary" (click)="sendMessage(textInput)">
                         <fa-icon [icon]="faPaperPlane"></fa-icon>
                       </button>
                     </div>

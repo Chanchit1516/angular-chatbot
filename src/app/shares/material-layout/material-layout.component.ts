@@ -56,8 +56,6 @@ export class MaterialLayoutComponent implements OnInit {
   public contentMargin = 240;
   isLoggedIn = false;
   isShow: boolean = true
-  isMessageLoading: boolean = false
-  isTopic = false
   textInput!: string;
   delayMessage:number = 1500;
 
@@ -192,22 +190,22 @@ export class MaterialLayoutComponent implements OnInit {
   // }
 
   answerQuestion(value: any) {
-    if (this.user.user_type !== "DSSC" && !this.isMessageLoading) {
-      this.isMessageLoading = true;
+    if (this.user.user_type !== "DSSC" && !this.chatbotService.isMessageLoadingShare) {
+      this.chatbotService.isMessageLoadingShare = true;
       this.sendMessage(value, true);
     }
   }
 
   sendMessage(value: any, isPressEvent: boolean = false): void {
     if (value) {
-      this.isTopic = isPressEvent;
+      this.chatbotService.isTopicShare = isPressEvent;
       let send = new SendMessage();
       this.dateNow = new Date();
       var dateNowString = new Date().toLocaleString()
       let dateNowStrings = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
 
       if(this.messages.length === 0)
-        this.isMessageLoading = true;
+      this.chatbotService.isMessageLoadingShare = true;
 
       send.UserId = this.user.user_id;
       send.Message = value;
@@ -257,7 +255,7 @@ export class MaterialLayoutComponent implements OnInit {
 
   addToInbox(obj: RecieveMessage) {
     setTimeout(() => {
-      this.isMessageLoading = false;
+      this.chatbotService.isMessageLoadingShare = false;
       // this.count = 0;
       if (obj.isFirstLoad) {
         // this.isMessageLoading = false;
@@ -370,7 +368,7 @@ export class MaterialLayoutComponent implements OnInit {
         this.chatbotService.messageShare = this.messages;
       }
       // this.scrollToBottom()
-    }, obj.isFirstLoad || !this.isTopic ? 0 : this.delayMessage)
+    }, obj.isFirstLoad || !this.chatbotService.isTopicShare ? 0 : this.delayMessage)
   }
 
   switchChat() {
