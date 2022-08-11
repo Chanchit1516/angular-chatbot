@@ -5,7 +5,7 @@ import { Message } from '../models/Message';
 import { Observable, Subject } from 'rxjs';
 import { RecieveMessage } from '../models/Message'
 import { map } from 'rxjs/operators';
-import { NavigationStart, Router , NavigationEnd } from '@angular/router';
+import { NavigationStart, Router, NavigationEnd } from '@angular/router';
 
 import { TokenStorageService } from '../services/token-storage.service';
 import { User } from '../models/User';
@@ -25,10 +25,10 @@ export class ChatbotService {
   private sharedObj = new Subject<RecieveMessage>();
   isLoggedIn = false;
   user = new User();
-  ConnectionStarted  = false;
+  ConnectionStarted = false;
   public messageShare: Message[] = [];
   public isShowChat = true;
-  public connectionIdShare:any = "";
+  public connectionIdShare: any = "";
 
 
   constructor(private http: HttpClient,
@@ -88,29 +88,35 @@ export class ChatbotService {
     );
   }
 
-  public getConnectionId() :void{
+  public getConnectionId(): void {
     this.connection.invoke('GetConnectionId')
-   .then((connectionId:string) => {
-      this.connectionIdShare = connectionId
-      // alert(connectionId);
-      // this.connectionIdShare = connectionId;
-   })
+      .then((connectionId: string) => {
+        this.connectionIdShare = connectionId
+        // alert(connectionId);
+        // this.connectionIdShare = connectionId;
+      })
   }
-  
+
   // Calls the controller method
-  public broadcastMessage(msgDto: any) {
-    this.http.post(this.POST_URL + "/SendRequest", msgDto).subscribe(data => console.log(data));
+  public broadcastMessage(msgDto: any): Observable<any> {
+    let API_URL = `${this.POST_URL}/SendRequest`;
+    return this.http.post(`${API_URL}`, msgDto).pipe(
+      map((res: any) => {
+        return res || {};
+      })
+    );
+    // this.http.post(this.POST_URL + "/SendRequest", msgDto).subscribe(data => console.log(data));
   }
 
   public retrieveMappedObject(): Observable<RecieveMessage> {
     return this.sharedObj.asObservable();
   }
 
-  public checkObservedIsExisting() :boolean{
+  public checkObservedIsExisting(): boolean {
     return this.sharedObj.observed
   }
 
-  public checkConnectionStatus() :boolean{
+  public checkConnectionStatus(): boolean {
     return this.ConnectionStarted;
   }
 

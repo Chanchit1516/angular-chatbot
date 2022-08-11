@@ -57,6 +57,7 @@ export class MaterialLayoutComponent implements OnInit {
   isLoggedIn = false;
   isShow: boolean = true
   isMessageLoading: boolean = false
+  isTopic = false
   textInput!: string;
   delayMessage:number = 1500;
 
@@ -74,6 +75,7 @@ export class MaterialLayoutComponent implements OnInit {
     this.title = 'SCG Web Claim';
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.messages = this.chatbotService.messageShare;
+
     if (this.isLoggedIn) {
       this.user = this.tokenStorageService.getUser() || new User();
     }
@@ -190,7 +192,7 @@ export class MaterialLayoutComponent implements OnInit {
   // }
 
   answerQuestion(value: any) {
-    if (this.user.user_type !== "DSSC") {
+    if (this.user.user_type !== "DSSC" && !this.isMessageLoading) {
       this.isMessageLoading = true;
       this.sendMessage(value, true);
     }
@@ -198,11 +200,14 @@ export class MaterialLayoutComponent implements OnInit {
 
   sendMessage(value: any, isPressEvent: boolean = false): void {
     if (value) {
-      this.count = 0;
+      this.isTopic = isPressEvent;
       let send = new SendMessage();
       this.dateNow = new Date();
       var dateNowString = new Date().toLocaleString()
       let dateNowStrings = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+
+      if(this.messages.length === 0)
+        this.isMessageLoading = true;
 
       send.UserId = this.user.user_id;
       send.Message = value;
@@ -232,7 +237,7 @@ export class MaterialLayoutComponent implements OnInit {
 
       if (this.chatbotService.checkConnectionStatus()) {
         this.messages.push(this.message);
-        this.chatbotService.broadcastMessage(send);
+        this.chatbotService.broadcastMessage(send).subscribe(data => console.log(data));
       } else {
         this.message = new Message();
         this.message.user_id = this.user.user_id;
@@ -243,7 +248,7 @@ export class MaterialLayoutComponent implements OnInit {
         this.message.is_connection_lose = true;
 
         this.messages.push(this.message);
-        this.scrollToBottom()
+        // this.scrollToBottom()
       }
     }
 
@@ -253,8 +258,9 @@ export class MaterialLayoutComponent implements OnInit {
   addToInbox(obj: RecieveMessage) {
     setTimeout(() => {
       this.isMessageLoading = false;
+      // this.count = 0;
       if (obj.isFirstLoad) {
-        this.count++;
+        // this.isMessageLoading = false;
         this.messages = new Array<Message>();
         obj.lists.forEach((element, index) => {
           this.message = new Message();
@@ -283,9 +289,10 @@ export class MaterialLayoutComponent implements OnInit {
 
           this.messages.push(this.message);
           // this.chatbotService.messageShare = this.messages;
-          // this.scrollToBottom()
+          this.scrollToBottom()
         });
       } else if (obj.userId !== this.user.user_id) {
+        // this.isMessageLoading = false;
         obj.lists.forEach((element, index) => {
           this.message = new Message();
           this.message.user_id = obj.userId;
@@ -317,6 +324,7 @@ export class MaterialLayoutComponent implements OnInit {
           // this.scrollToBottom()
         });
       } else {
+        // this.isMessageLoading = false;
         obj.lists.forEach((element, index) => {
           if (index !== 0) {
             this.message = new Message();
@@ -361,8 +369,8 @@ export class MaterialLayoutComponent implements OnInit {
       if (this.messages.length !== this.chatbotService.messageShare.length) {
         this.chatbotService.messageShare = this.messages;
       }
-      this.scrollToBottom()
-    }, obj.isFirstLoad ? 0 : this.delayMessage)
+      // this.scrollToBottom()
+    }, obj.isFirstLoad || !this.isTopic ? 0 : this.delayMessage)
   }
 
   switchChat() {
