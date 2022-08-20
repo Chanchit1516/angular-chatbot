@@ -82,12 +82,12 @@ export class MaterialLayoutComponent implements OnInit {
       this.chatbotService.retrieveMappedObject().subscribe((receivedObj: RecieveMessage) => { this.addToInbox(receivedObj); });  // calls the service method to get the new messages sent
     }
 
-
-
     // this.router.events.subscribe(() => {
     //   this.scrollToBottom()
     // });
   }
+
+
 
   ngDoCheck() {
     if (this.isHandset) {
@@ -319,7 +319,7 @@ export class MaterialLayoutComponent implements OnInit {
 
           this.messages.push(this.message);
           // this.chatbotService.messageShare = this.messages;
-          // this.scrollToBottom()
+          this.scrollToBottom()
         });
       } else {
         // this.isMessageLoading = false;
@@ -349,7 +349,7 @@ export class MaterialLayoutComponent implements OnInit {
             }
             this.messages.push(this.message);
             // this.chatbotService.messageShare = this.messages;
-            // this.scrollToBottom()
+            this.scrollToBottom()
           }
           this.messages[this.messages.length - 1].is_ShowDay = true;
 
@@ -371,12 +371,24 @@ export class MaterialLayoutComponent implements OnInit {
     }, obj.isFirstLoad || !this.chatbotService.isTopicShare ? 0 : this.delayMessage)
   }
 
+  showDialog(){
+    this.chatbotService.isShowDialog = !this.chatbotService.isShowDialog
+  }
+
+  closeDialogCase(){
+    this.chatbotService.isShowDialog = false;
+  }
+
   switchChat() {
     this.chatbotService.isShowChat = !this.chatbotService.isShowChat;
     if (this.chatbotService.isShowChat) {
       this.scrollToBottom()
+    }else{
+     this.chatbotService.isShowDialog = false;
     }
   }
+
+  
 
   scrollToBottom(): void {
     try {

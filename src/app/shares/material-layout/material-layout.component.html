@@ -117,7 +117,7 @@
                           </div>
                           <div *ngIf="msg.button_id === 2">
                             <span class="text-primary">
-                              <span style="cursor: pointer">{{msg.message}} </span>
+                              <span style="cursor: pointer" (click)="showDialog()">{{msg.message}} </span>
                             </span>
                           </div>
                         </div>
@@ -197,7 +197,8 @@
 
                   </div>
 
-                  <div *ngIf="chatbotService.isMessageLoadingShare" class="card card-text-left d-inline-block p-2 px-3 m-1 mb-3">
+                  <div *ngIf="chatbotService.isMessageLoadingShare"
+                    class="card card-text-left d-inline-block p-2 px-3 m-1 mb-3">
                     <div class="loader">
                       <div class="circle" id="a"></div>
                       <div class="circle" id="b"></div>
@@ -210,17 +211,103 @@
                 <div class="card-footer bg-white w-100 bottom-0 m-0 p-1">
                   <div class="input-group">
 
-                    <input type="text" id="send-msg" [disabled]="chatbotService.isMessageLoadingShare" [(ngModel)]="textInput"
-                      class="form-control border-0" placeholder="Write a message..."
+                    <input type="text" id="send-msg" [disabled]="chatbotService.isMessageLoadingShare"
+                      [(ngModel)]="textInput" class="form-control border-0" placeholder="Write a message..."
                       (keydown)="onKeydownMessages($event)">
 
                     <div class="input-group-text bg-transparent border-0">
-                      <button [disabled]="chatbotService.isMessageLoadingShare" class="btn btn-light text-secondary" (click)="sendMessage(textInput)">
+                      <button [disabled]="chatbotService.isMessageLoadingShare" class="btn btn-light text-secondary"
+                        (click)="sendMessage(textInput)">
                         <fa-icon [icon]="faPaperPlane"></fa-icon>
                       </button>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div *ngIf="chatbotService.isShowDialog">
+          <div class="row mt-4 dialog-case">
+            <div class="col">
+              <div class="card mx-auto">
+                <div class="card-header" style="background-color:rgb(236, 65, 65);">
+                  <div class="navbar navbar-expand p-0">
+                    <ul class="navbar-nav me-auto align-items-center">
+
+                      <li class="nav-item">
+                        <a href="javascript:void(0)" class="nav-link">
+                          <div class="position-relative"
+                            style="width: 50px;height: 50px;border-radius:50%;border: 2px solid #e84118; padding: 0;">
+                            <img src="../../../assets/images/chatbot-icon.jpg" class="img-fluid rounded-circle" alt="">
+                            <span
+                              class="position-absolute bottom-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
+                              <span class="visually-hidden">New alerts</span>
+                            </span>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="javascript:void(0)" class="nav-link"></a>
+                      </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                      <li class="nav-item" (click)="closeDialogCase()">
+                        <div class="bg-transparent border-0">
+                          <button class="btn text-secondary" style="border-radius: 50%;">
+                            <fa-icon [icon]="faX"></fa-icon>
+                          </button>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card-body p-1 scroll-always"
+                  style="height: 458px; width: 400px;overflow-y: scroll;overflow-x: hidden; padding-bottom: unset !important;">
+                  <div class="container mb-4">
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        Case No. 123
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-sm-12">
+                        <label class="form-label">หัวข้อ</label>
+                        <input type="text" class="form-control" placeholder="คำตอบ">
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-sm-12">
+                        <label class="form-label">เรื่องที่ต้องการแจ้ง</label>
+                        <textarea type="text" class="form-control" placeholder="คำตอบ"></textarea>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-sm-12">
+                        <label class="form-label">เบอร์โทรติดต่อกลับ</label>
+                        <textarea type="text" class="form-control" placeholder="คำตอบ"></textarea>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-sm-12">
+                        <label class="form-label">อีเมลล์</label>
+                        <textarea type="text" class="form-control" placeholder="คำตอบ"></textarea>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-sm-12">
+                        <div class="text-end">
+                          <button class="btn btn-primary ps-2" type="button">Submit</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+               
+
               </div>
             </div>
           </div>

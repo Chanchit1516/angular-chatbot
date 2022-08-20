@@ -24,6 +24,14 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./pages/home-page/home-page.module').then(m=>m.HomePageModule)
+      },
+      {
+        path: 'user-management',
+        loadChildren: () => import('./pages/user-management/user-management.module').then(m=>m.UserManagementModule)
+      },
+      {
+        path: 'role-management',
+        loadChildren: () => import('./pages/role-management/role-management.module').then(m=>m.RoleManagementModule)
       }
     ]
   },
@@ -39,38 +47,6 @@ const routes: Routes = [
       {
         path: 'login',
         loadChildren: () => import('./pages/login-page/login-page.module').then(m=>m.LoginPageModule)
-      }
-    ]
-  },
-  {
-    path: '',
-    component: MaterialLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
-      {
-        path: '',
-        redirectTo: '/user-management',
-        pathMatch: 'full',
-      },
-      {
-        path: 'user-management',
-        loadChildren: () => import('./pages/user-management/user-management.module').then(m=>m.UserManagementModule)
-      }
-    ]
-  },
-  {
-    path: '',
-    component: MaterialLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
-      {
-        path: '',
-        redirectTo: '/role-management',
-        pathMatch: 'full',
-      },
-      {
-        path: 'role-management',
-        loadChildren: () => import('./pages/role-management/role-management.module').then(m=>m.RoleManagementModule)
       }
     ]
   },

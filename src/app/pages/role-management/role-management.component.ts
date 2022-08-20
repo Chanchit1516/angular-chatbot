@@ -2,6 +2,8 @@ import { Component, OnInit , ViewChild ,ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { faPhone , faVideo , faTimes , faPaperclip ,faSmile ,faMicrophone , faX , faMinus , faAngleLeft , faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { Message } from '../../models/Message';
+import { Store } from '@ngrx/store';
+import { increment, decrement, reset } from '../../redux/action/counter.actions';
 
 @Component({
   selector: 'app-role-management',
@@ -10,7 +12,7 @@ import { Message } from '../../models/Message';
 })
 export class RoleManagementComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
-
+  public count:any = 0;
   // faPhone = faPhone;
   // faVideo = faVideo;
   // faTimes = faTimes;
@@ -22,7 +24,8 @@ export class RoleManagementComponent implements OnInit {
   // faAngleLeft = faAngleLeft;
   // faPaperPlane = faPaperPlane;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private store: Store<any>) { }
   // isShow:boolean = true
   // arrChat:any[] = [];
   // textInput!:string;
@@ -33,7 +36,11 @@ export class RoleManagementComponent implements OnInit {
   
 
   ngOnInit(): void {
+    this.store.dispatch(increment());
 
+    this.store.select('count').subscribe((res)=>{
+      this.count = res
+    });
   }
 
   // switchChat(){

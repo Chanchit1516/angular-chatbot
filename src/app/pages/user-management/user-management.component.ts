@@ -2,6 +2,8 @@ import {AfterViewInit, Component, ViewChild , OnInit} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { ChatbotService } from '../../services/chatbot.service';
+import { Store } from '@ngrx/store';
+import { increment, decrement, reset } from '../../redux/action/counter.actions';
 
 @Component({
   selector: 'app-user-management',
@@ -9,16 +11,21 @@ import { ChatbotService } from '../../services/chatbot.service';
   styleUrls: ['./user-management.component.scss']
 })
 export class UserManagementComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource:any = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-
   @ViewChild(MatPaginator) paginator?: MatPaginator;
 
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource:any = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  public count:any = 0;
 
-  constructor() { }
+
+  constructor(private store: Store<any>) { }
   
   ngOnInit(): void {
-    
+    this.store.dispatch(increment());
+
+    this.store.select('count').subscribe((res)=>{
+      this.count = res
+    });
   }
 
   ngAfterViewInit() {

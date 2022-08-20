@@ -15,6 +15,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginLayoutComponent } from './shares/login-layout/login-layout.component';
 import { LoadingLayoutComponent } from './shares/loading-layout/loading-layout.component';
 import { DatePipe } from '@angular/common';
+import { StoreModule } from '@ngrx/store';
+import { counterReducer } from './redux/reducer/counter.reducer';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { DatePipe } from '@angular/common';
     MaterialModule,
     FontAwesomeModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({ count: counterReducer })
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
