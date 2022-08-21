@@ -349,8 +349,8 @@ export class MaterialLayoutComponent implements OnInit {
             }
             this.messages.push(this.message);
             // this.chatbotService.messageShare = this.messages;
-            this.scrollToBottom()
           }
+          this.scrollToBottom()
           this.messages[this.messages.length - 1].is_ShowDay = true;
 
           if (this.messages.length == 1) return

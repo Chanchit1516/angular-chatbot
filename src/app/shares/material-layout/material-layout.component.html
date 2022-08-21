@@ -93,7 +93,7 @@
                 </div>
                 <div class="card-body p-1"
                   style="height: 400px; width: 350px;overflow-y: auto;overflow-x: hidden; padding-bottom: unset !important;"
-                  #scrollMe [scrollTop]="scrollMe.scrollHeight">
+                  #scrollMe>
                   <div *ngFor="let msg of chatbotService.messageShare;let i = index">
                     <!-- <div class="small px-2 text-center" *ngIf="msg.is_ShowDay">
                         <label>
