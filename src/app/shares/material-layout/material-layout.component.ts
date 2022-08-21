@@ -212,7 +212,7 @@ export class MaterialLayoutComponent implements OnInit {
       send.Type = "sent";
       send.UserType = this.user.user_type;
       send.IsPressTopic = isPressEvent;
-      send.TimeStamp = new Date(dateNowString);
+      send.TimeStamp = new Date();
       send.TimeStampString = dateNowStrings ?? "";
 
       this.message = new Message();
