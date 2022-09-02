@@ -15,7 +15,7 @@ import { User } from '../models/User';
 })
 export class ChatbotService {
 
-  private connection: any = new signalR.HubConnectionBuilder().withUrl("https://localhost:7209/chatsocket") // mapping to the chathub as in startup.cs
+  public connection: any = new signalR.HubConnectionBuilder().withUrl("https://localhost:7209/chatsocket") // mapping to the chathub as in startup.cs
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
@@ -40,6 +40,7 @@ export class ChatbotService {
       this.ConnectionStarted = false;
       await this.start();
     });
+    debugger
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
       this.user = this.tokenStorageService.getUser() || new User();

@@ -248,12 +248,14 @@ export class MaterialLayoutComponent implements OnInit {
         this.messages.push(this.message);
         // this.scrollToBottom()
       }
+      this.scrollToBottom()
     }
 
   }
 
 
   addToInbox(obj: RecieveMessage) {
+    this.scrollToBottom()
     setTimeout(() => {
       this.chatbotService.isMessageLoadingShare = false;
       // this.count = 0;
@@ -287,10 +289,11 @@ export class MaterialLayoutComponent implements OnInit {
 
           this.messages.push(this.message);
           // this.chatbotService.messageShare = this.messages;
-          this.scrollToBottom()
+          // this.scrollToBottom()
         });
       } else if (obj.userId !== this.user.user_id) {
         // this.isMessageLoading = false;
+        debugger
         obj.lists.forEach((element, index) => {
           this.message = new Message();
           this.message.user_id = obj.userId;
