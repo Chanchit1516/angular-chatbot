@@ -107,7 +107,7 @@
 
                         <div class="card card-text-left d-inline-block p-2 px-3 m-1">
                           <div *ngIf="!msg.button_id">
-                            {{msg.message}} {{msg.type}}
+                            {{msg.message}}
                           </div>
                           <div *ngIf="msg.button_id === 1">
                             <span *ngFor="let topic of msg.topic;let idx = index" class="text-primary">
@@ -156,7 +156,7 @@
                           [class.card-text-right-btn1]="msg.button_id === 1"
                           [class.card-text-right-btn2]="msg.button_id === 2">
                           <div *ngIf="!msg.button_id && !msg.is_connection_lose">
-                            {{msg.message}} {{msg.type}}
+                            {{msg.message}}
                           </div>
                           <div *ngIf="msg.button_id === 1 && !msg.is_connection_lose">
                             <span *ngFor="let topic of msg.topic;let i = index" class="text-danger">
