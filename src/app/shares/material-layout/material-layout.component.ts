@@ -322,7 +322,7 @@ export class MaterialLayoutComponent implements OnInit {
 
           this.messages.push(this.message);
           // this.chatbotService.messageShare = this.messages;
-          this.scrollToBottom()
+          // this.scrollToBottom()
         });
       } else {
         // this.isMessageLoading = false;
@@ -353,7 +353,7 @@ export class MaterialLayoutComponent implements OnInit {
             this.messages.push(this.message);
             // this.chatbotService.messageShare = this.messages;
           }
-          this.scrollToBottom()
+          // this.scrollToBottom()
           this.messages[this.messages.length - 1].is_ShowDay = true;
 
           if (this.messages.length == 1) return
@@ -370,7 +370,7 @@ export class MaterialLayoutComponent implements OnInit {
       if (this.messages.length !== this.chatbotService.messageShare.length) {
         this.chatbotService.messageShare = this.messages;
       }
-      // this.scrollToBottom()
+      this.scrollToBottom()
     }, obj.isFirstLoad || !this.chatbotService.isTopicShare ? 0 : this.delayMessage)
   }
 
