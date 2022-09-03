@@ -15,11 +15,11 @@ import { User } from '../models/User';
 })
 export class ChatbotService {
 
-  public connection: any = new signalR.HubConnectionBuilder().withUrl("https://localhost:7209/chatsocket") // mapping to the chathub as in startup.cs
+  public connection: any = new signalR.HubConnectionBuilder().withUrl("https://chatbot-webapi.herokuapp.com/chatsocket") // mapping to the chathub as in startup.cs
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
-  readonly POST_URL = "https://localhost:7209/api/Chatbot"
+  readonly POST_URL = "https://chatbot-webapi.herokuapp.com/api/Chatbot"
 
   // private receivedMessageObject: RecieveMessage = new RecieveMessage();
   private sharedObj = new Subject<RecieveMessage>();
